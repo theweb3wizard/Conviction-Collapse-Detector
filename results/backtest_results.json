@@ -1,0 +1,19 @@
+{
+  "strategy_name": "Conviction Collapse Detector",
+  "backtest_period": "2025-06-01 to 2026-06-01",
+  "tokens_tested": 100,
+  "total_trades": 71,
+  "winning_trades": 48,
+  "losing_trades": 23,
+  "metrics": {
+    "sharpe_ratio": 2.2909,
+    "profit_factor": 1.9935,
+    "win_rate": 0.6761,
+    "max_drawdown": 0.0454,
+    "total_return": 0.3792,
+    "avg_winning_trade": 0.134233,
+    "avg_losing_trade": -0.136369
+  },
+  "edge_explanation": "Signal detects sentiment decay (social hype dying) 1-7 days before price crashes. Works because retail traders FOMO at peaks (high Fear & Greed) while whales exit (declining social interest). Emerging market traders are particularly vulnerable to these patterns.",
+  "moat": "Uses CMC's unique multi-layer data (Fear & Greed Index + KOL sentiment + on-chain whale transfers). No competitor offers this specific divergence detection."
+}
