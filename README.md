@@ -282,6 +282,7 @@ conviction-collapse-detector/
 ├── 📦 requirements.txt           # Python dependencies
 ├── 📖 README.md                  # This file
 ├── 📝 summary.md                 # Build summary
+├── 📋 skill.json                 # CMC Agent Hub MCP manifest (inputs, outputs, thresholds)
 ├── 📁 results/
 │   ├── backtest_results.json     # Full metrics output
 │   ├── trades.csv                # All 71 trades with entry/exit/P&L
