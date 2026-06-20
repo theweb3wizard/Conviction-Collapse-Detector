@@ -1,0 +1,106 @@
+{
+  "name": "conviction-collapse-detector",
+  "version": "1.0.0",
+  "description": "Detects when social sentiment is decaying while price is still elevated — signaling exit 1–7 days before sentiment-driven crashes in meme coins and micro-cap tokens.",
+  "author": "The Web3 Wizard",
+  "tags": ["sentiment", "divergence", "exit-signal", "meme-coins", "micro-caps", "pump-and-dump"],
+  "cmc_hub": {
+    "category": "strategy",
+    "capabilities": ["signal-generation", "backtest-analysis"],
+    "data_requirements": ["ohlcv", "fear-greed-index"],
+    "mcp_tool_name": "conviction_collapse_detect"
+  },
+  "inputs": {
+    "type": "object",
+    "properties": {
+      "token_ohlcv": {
+        "type": "array",
+        "description": "Array of OHLCV candles for the token. Each candle: {timestamp, open, high, low, close, volume}",
+        "items": {
+          "type": "object",
+          "properties": {
+            "timestamp": {"type": "string", "format": "date-time"},
+            "open": {"type": "number"},
+            "high": {"type": "number"},
+            "low": {"type": "number"},
+            "close": {"type": "number"},
+            "volume": {"type": "number"}
+          },
+          "required": ["timestamp", "close", "volume"]
+        }
+      },
+      "fear_greed_value": {
+        "type": "number",
+        "description": "Current CoinMarketCap Fear & Greed Index value (0–100)",
+        "minimum": 0,
+        "maximum": 100
+      },
+      "lookback_hours": {
+        "type": "integer",
+        "description": "Lookback window in hours (default: 4, for 4-hour candles)",
+        "default": 4,
+        "minimum": 1,
+        "maximum": 24
+      }
+    },
+    "required": ["token_ohlcv", "fear_greed_value"]
+  },
+  "outputs": {
+    "type": "object",
+    "properties": {
+      "signal": {
+        "type": "string",
+        "enum": ["CONVICTION_COLLAPSE_DETECTED", "NO_SIGNAL"],
+        "description": "Trading signal verdict"
+      },
+      "reason": {
+        "type": "string",
+        "description": "Human-readable explanation of why the signal fired or didn't fire"
+      },
+      "entry_price": {
+        "type": "number",
+        "description": "Close price of the current candle — suggested entry"
+      },
+      "fear_greed": {
+        "type": "number",
+        "description": "Fear & Greed value used for this signal"
+      },
+      "timestamp": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Timestamp of the signal"
+      }
+    }
+  },
+  "parameters": {
+    "thresholds": {
+      "fear_greed_min": 65,
+      "price_momentum_max": 0.10,
+      "price_flat_min": -0.05,
+      "price_flat_max": 0.05,
+      "sentiment_decay_threshold": 0.15,
+      "volume_declining_threshold": 0.0,
+      "exit_profit_target": 0.20,
+      "exit_max_hold_days": 10,
+      "exit_fear_greed_floor": 40
+    },
+    "position_sizing": {
+      "fraction_per_trade": 0.10,
+      "max_simultaneous": 15
+    }
+  },
+  "backtest_summary": {
+    "period": "2025-06-01 to 2026-06-01",
+    "tokens_tested": 100,
+    "total_trades": 71,
+    "winning_trades": 48,
+    "losing_trades": 23,
+    "metrics": {
+      "sharpe_ratio": 2.29,
+      "profit_factor": 1.99,
+      "win_rate": 0.676,
+      "max_drawdown": 0.045,
+      "total_return": 0.379
+    }
+  }
+}
